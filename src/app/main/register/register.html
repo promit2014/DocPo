@@ -1,0 +1,135 @@
+<div id="register-v2" layout="row" layout-align="start">
+    <div id="register-v2-intro" flex hide show-gt-sm>
+        <div class="logo md-accent-bg">
+            <span>D</span>
+        </div>
+        <div class="title">
+            Welcome to the DocPo!
+        </div>
+        <div class="description">
+            Sign Up to keep your medical history with us safe and handy.
+        </div>
+    </div>
+    <div id="register-v2-form-wrapper" class="flex-scrollable md-whiteframe-8dp" layout="column" flex ms-scroll>
+        <div id="register-v2-form">
+            <div class="logo md-accent-bg" hide-gt-sm>
+                <span>D</span>
+            </div>
+            <div class="title">Create an account</div>
+            <div class="description">*All fields as mandatory.
+            </div>
+            <form name="registerForm" novalidate>
+                <md-input-container class="md-block">
+                    <label>First Name</label>
+                    <input name="firstname" ng-model="vm.form.firstname" required>
+                    <div ng-messages="registerForm.firstname.$error" role="alert">
+                        <div ng-message="required">
+                            <span>FirstName  is required</span>
+                        </div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Last Name</label>
+                    <input name="lastname" ng-model="vm.form.lastname" required>
+                    <div ng-messages="registerForm.lastname.$error" role="alert">
+                        <div ng-message="required">
+                            <span>LastName is required</span>
+                        </div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block" md-no-float flex>
+                    <!-- <input name="dob" ng-model="vm.form.dob" placeholder="Date of Birth"
+                           required> -->
+                    <md-datepicker name="dob" ng-model="vm.form.dob" placeholder="Date of Birth" required></md-datepicker flex>
+                    <div ng-messages="registerForm.dob.$error" role="alert">
+                        <div ng-message="required">
+                            <span>DOB is required</span>
+                        </div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block" md-no-float>
+                    <input name="age" ng-model="vm.form.age" placeholder="Age in Yrs" required>
+                    <div ng-messages="registerForm.age.$error" role="alert">
+                        <div ng-message="required">
+                            <span>Age is required</span>
+                        </div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block" md-no-float>
+                    <input type="email" name="email" ng-model="vm.form.email" placeholder="Email" ng-pattern="/^.+@.+\..+$/" required>
+                    <div ng-messages="registerForm.email.$error" role="alert" multiple>
+                        <div ng-message="required">
+                            <span>Email field is required</span>
+                        </div>
+                        <div ng-message="pattern">
+                            <span>Email must be a valid e-mail address</span>
+                        </div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <!-- <input name="age" ng-model="vm.form.age" placeholder="Age in Yrs"
+                           required> -->
+                    <label>Gender</label>
+                    <md-select ng-model="vm.form.gender">
+                        <md-option value="male">Male</md-option>
+                        <md-option value="female">Female</md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container class="md-block" md-no-float>
+                    <input name="mobile" ng-model="vm.form.mobile" placeholder="Mobile Number" required>
+                    <div ng-messages="registerForm.mobile.$error" role="alert">
+                        <div ng-message="required">
+                            <span>Mobile No is required</span>
+                        </div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block" md-no-float>
+                    <input name="country" ng-model="vm.form.country" placeholder="Country" required>
+                    <div ng-messages="registerForm.country.$error" role="alert">
+                        <div ng-message="required">
+                            <span>Country is required</span>
+                        </div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block" md-no-float>
+                    <input name="city" ng-model="vm.form.city" placeholder="City" required>
+                    <div ng-messages="registerForm.city.$error" role="alert">
+                        <div ng-message="required">
+                            <span>City is required</span>
+                        </div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block" md-no-float>
+                    <input type="password" name="password" ng-model="vm.form.password" placeholder="Password" required>
+                    <div ng-messages="registerForm.password.$error" role="alert">
+                        <div ng-message="required">
+                            <span>Password field is required</span>
+                        </div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block" md-no-float>
+                    <input type="password" name="passwordConfirm" ng-model="vm.form.passwordConfirm" placeholder="Password (Confirm)" required>
+                    <div ng-messages="registerForm.passwordConfirm.$error" role="alert">
+                        <div ng-message="required">
+                            <span>Password (Confirm) field is required</span>
+                        </div>
+                    </div>
+                </md-input-container>
+                <div class="terms" layout="row" layout-align="center center">
+                    <md-checkbox name="terms" ng-model="data.cb1" aria-label="I read and accept" required></md-checkbox>
+                    <div layout="row" layout-sm="column" layout-align="start center">
+                        <span>I read and accept</span>
+                        <a href="#" class="md-accent-color">terms and conditions</a>
+                    </div>
+                </div>
+                <md-button type="submit" class="md-raised md-accent submit-button" aria-label="CREATE MY ACCOUNT" ng-disabled="registerForm.$invalid || registerForm.$pristine" ng-click="vm.signin(vm.form)">
+                    CREATE MY ACCOUNT
+                </md-button>
+            </form>
+            <div class="login" layout="row" layout-sm="column" layout-align="center center">
+                <span class="text">Already have an account?</span>
+                <a class="link" ui-sref="app.auth_login">Log in</a>
+            </div>
+        </div>
+    </div>
+</div>
