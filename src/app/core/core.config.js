@@ -1,13 +1,64 @@
 (function() {
     'use strict';
+     angular
+        .module('app.core')
+        .factory('SatellizerInterceptor', SatellizerInterceptor)
+        .config(config);
+
+    /** @ngInject */
+    function config($ariaProvider, $logProvider, msScrollConfigProvider, fuseConfigProvider , $authProvider , $httpProvider) {
+        // Enable debug logging
+        $logProvider.debugEnabled(true);
+
+        /*eslint-disable */
+
+        // ng-aria configuration
+        $ariaProvider.config({
+            tabindex: false
+        });
+
+        // Fuse theme configurations
+        fuseConfigProvider.config({
+            'disableCustomScrollbars': false,
+            'disableCustomScrollbarsOnMobile': true,
+            'disableMdInkRippleOnMobile': true
+        });
+
+        // msScroll configuration
+        msScrollConfigProvider.config({
+            wheelPropagation: true
+        });
+
+        /* Satellizer properties override needed for customization*/
+        /* required login api endpoint*/
+        $authProvider.loginUrl = '/api/user/login';
+        /* required register api endpoint*/
+        $authProvider.signupUrl = '/api/user/signup';
+        /* local storage name prefix "satellizer_YOUR-TOKEN-NAME"*/
+        $authProvider.tokenPrefix = 'satellizer';
+        /* token header that needs to be injected in every request via interceptor*/
+        $authProvider.tokenHeader = 'x-user-access-token';
+        /* default -> "Bearer" reset to blank required*/
+        $authProvider.tokenType = '';
+        /*Token name that is returned from the server */
+        $authProvider.tokenName = 'authToken';
+        /* Turn off default interceptor provided by satellizer*/
+        $authProvider.httpInterceptor = false;
+
+        return new SatellizerHttpProviderConfig($httpProvider);
+
+        /*eslint-enable */
+    };
+
+
     /* Overridden Interceptor of Satellizer for intercepting and authentication every request
 
 ===================DO NOT CHANGE Unless Required =========================================
 
 */
-    let SatellizerInterceptor = (function() {
+    var SatellizerInterceptor = (function() {
         function Interceptor(SatellizerConfig, SatellizerShared, SatellizerStorage, $q, $rootScope) {
-            let _this = this;
+            var _this = this;
             this.SatellizerConfig = SatellizerConfig;
             this.SatellizerShared = SatellizerShared;
             this.SatellizerStorage = SatellizerStorage;
@@ -19,9 +70,9 @@
                 }
 
                 if (_this.SatellizerShared.isAuthenticated()) {
-                    let tokenName = _this.SatellizerConfig.tokenPrefix ? [_this.SatellizerConfig.tokenPrefix, _this.SatellizerConfig.tokenName]
+                    var tokenName = _this.SatellizerConfig.tokenPrefix ? [_this.SatellizerConfig.tokenPrefix, _this.SatellizerConfig.tokenName]
                         .join('_') : _this.SatellizerConfig.tokenName;
-                    let token = _this.SatellizerStorage.get(tokenName);
+                    var token = _this.SatellizerStorage.get(tokenName);
                     if (_this.SatellizerConfig.tokenHeader && _this.SatellizerConfig.tokenType) {
                         token = _this.SatellizerConfig.tokenType + ' ' + token;
                     }
@@ -76,7 +127,7 @@
     ];
 
     // Pushing the interceptor into $httpProvider
-    let SatellizerHttpProviderConfig = (function() {
+    var SatellizerHttpProviderConfig = (function() {
         function HttpProviderConfig($httpProvider) {
             this.$httpProvider = $httpProvider;
             $httpProvider.interceptors.push(SatellizerInterceptor.Factory);
@@ -85,60 +136,6 @@
         return HttpProviderConfig;
     }());
     // SatellizerHttpProviderConfig ends
-
-
-
-
-
-    angular
-        .module('app.core')
-        .factory('SatellizerInterceptor', SatellizerInterceptor)
-        .config(config);
-
-    /** @ngInject */
-    function config($ariaProvider, $logProvider, msScrollConfigProvider, fuseConfigProvider , $authProvider , $httpProvider) {
-        // Enable debug logging
-        $logProvider.debugEnabled(true);
-
-        /*eslint-disable */
-
-        // ng-aria configuration
-        $ariaProvider.config({
-            tabindex: false
-        });
-
-        // Fuse theme configurations
-        fuseConfigProvider.config({
-            'disableCustomScrollbars': false,
-            'disableCustomScrollbarsOnMobile': true,
-            'disableMdInkRippleOnMobile': true
-        });
-
-        // msScroll configuration
-        msScrollConfigProvider.config({
-            wheelPropagation: true
-        });
-
-        /* Satellizer properties override needed for customization*/
-        /* required login api endpoint*/
-        $authProvider.loginUrl = '/api/user/login';
-        /* required register api endpoint*/
-        $authProvider.signupUrl = '/api/user/signup';
-        /* local storage name prefix "satellizer_YOUR-TOKEN-NAME"*/
-        $authProvider.tokenPrefix = 'satellizer';
-        /* token header that needs to be injected in every request via interceptor*/
-        $authProvider.tokenHeader = 'x-user-access-token';
-        /* default -> "Bearer" reset to blank required*/
-        $authProvider.tokenType = '';
-        /*Token name that is returned from the server */
-        $authProvider.tokenName = 'authToken';
-        /* Turn off default interceptor provided by satellizer*/
-        $authProvider.httpInterceptor = false;
-
-        return new SatellizerHttpProviderConfig($httpProvider);
-
-        /*eslint-enable */
-    };
 
 
 })();
