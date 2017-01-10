@@ -6,7 +6,7 @@
         .config(config);
 
     /** @ngInject */
-    function config($ariaProvider, $logProvider, msScrollConfigProvider, fuseConfigProvider , $authProvider , $httpProvider) {
+    function config($ariaProvider, $logProvider, msScrollConfigProvider,fuseConfigProvider , $authProvider , $httpProvider) {
         // Enable debug logging
         $logProvider.debugEnabled(true);
 
